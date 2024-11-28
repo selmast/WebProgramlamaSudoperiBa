@@ -1,109 +1,131 @@
 <template>
   <div class="layout">
-    <!-- Static Navbar -->
-    <nav class="navbar">
-      <h2 class="navbar-title">Components</h2>
-      <ul class="navbar-list">
-        <li
-            v-for="(component, index) in components"
-            :key="index"
-            :class="{ active: currentComponent === component }"
-        >
-          <button @click="changeComponent(index)">
-            {{ componentNames[index] }}
-          </button>
-        </li>
-      </ul>
-    </nav>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>Components</h2>
+      <button
+          v-for="item in menuItems"
+          :key="item.name"
+          @click="setActiveComponent(item)"
+          :class="['menu-button', { active: activeMenu === item.name }]"
+      >
+        {{ item.name }}
+      </button>
+    </aside>
 
-    <!-- Dynamic Content -->
-    <div class="dynamic-content">
-      <h1>{{ currentComponentName }}</h1>
-    </div>
+    <!-- Main Content -->
+    <main class="main-content">
+      <h1>{{ activeMenu }}</h1>
+      <component :is="currentComponent" />
+    </main>
   </div>
 </template>
 
 <script>
+// Import all the components you want to render
+import HeaderContent from '~/components/HeaderContent.vue';
+//import Carousel from '~/components/Carousel.vue';
+//import CategoryList from '~/components/CategoryList.vue';
+//import ProductGrid from '~/components/ProductGrid.vue';
+//import ProductCard from '~/components/ProductCard.vue';
+//import LastAdded from '~/components/LastAdded.vue';
+//import ContactForm from '~/components/ContactForm.vue';
+//import SearchBar from '~/components/SearchBar.vue';
+//import Pagination from '~/components/Pagination.vue';
+//import FooterContent from '~/components/FooterContent.vue';
+
 export default {
+  components: {
+    HeaderContent,
+    //Carousel,
+   // CategoryList,
+   // ProductGrid,
+    //ProductCard,
+   // LastAdded,
+   // ContactForm,
+   // SearchBar,
+   // Pagination,
+   // FooterContent,
+  },
   data() {
     return {
-      components: ["Header", "Carousel", "CategoryList",  "ProductGrid", "ProductCard", "LastAdded" , "ContactForm", "SearchBar", "Pagination", "Footer"],
-      componentNames: ["Header", "Carousel", "Category List", "Product Grid",  "Product Card", "Last Added" , "Contact Form", "SearchBar", "Pagination", "Footer"],
-      currentComponent: "Header", // Default component
-      currentComponentName: "Header",
+      menuItems: [
+        { name: 'Header', component: 'HeaderContent' },
+        { name: 'Carousel', component: 'Carousel' },
+        { name: 'Category List', component: 'CategoryList' },
+        { name: 'Product Grid', component: 'ProductGrid' },
+        { name: 'Product Card', component: 'ProductCard' },
+        { name: 'Last Added', component: 'LastAdded' },
+        { name: 'Contact Form', component: 'ContactForm' },
+        { name: 'SearchBar', component: 'SearchBar' },
+        { name: 'Pagination', component: 'Pagination' },
+        { name: 'Footer', component: 'FooterContent' },
+      ],
+      currentComponent: 'HeaderContent', // Default component
+      activeMenu: 'Header', // Default menu title
     };
   },
   methods: {
-    changeComponent(index) {
-      this.currentComponent = this.components[index];
-      this.currentComponentName = this.componentNames[index];
+    setActiveComponent(item) {
+      this.currentComponent = item.component; // Update current component
+      this.activeMenu = item.name; // Update active menu for display
     },
   },
 };
 </script>
 
 <style scoped>
+/* Keep the design the same as your project screenshot */
 .layout {
   display: flex;
   height: 100vh;
-  font-family: Arial, sans-serif;
-  background-color: #f8f9fa;
-  color: #343a40;
 }
 
-/* Navbar */
-.navbar {
+.sidebar {
   width: 20%;
   background-color: #343a40;
   color: white;
-  padding: 20px;
+  padding: 10px;
 }
 
-.navbar-title {
-  font-size: 1.5rem;
-  font-weight: bold;
+.sidebar h2 {
   margin-bottom: 20px;
+  font-size: 25px;
 }
 
-.navbar-list {
-  list-style: none;
-  padding: 0;
-}
 
-.navbar-list li {
-  margin-bottom: 10px;
-}
-
-.navbar-list button {
+.menu-button {
+  display: block;
   width: 100%;
   padding: 10px;
+  margin-bottom: 10px;
   background-color: #495057;
   color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
   text-align: left;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
 }
 
-.navbar-list button:hover {
+.menu-button:hover {
+  background-color: #6c757d;
+}
+
+.menu-button.active {
   background-color: #007bff;
-}
-
-.navbar-list .active button {
-  background-color: #0056b3;
   font-weight: bold;
 }
 
-/* Dynamic Content */
-.dynamic-content {
+.main-content {
   flex: 1;
-  padding: 20px;
-  background-color: white;
-  overflow-y: auto;
+  padding: 10px;
+  background-color: #f8f9fa;
 }
 
-.dynamic-content h1 {
-  font-size: 2rem;
-  margin-bottom: 10px;
+.main-content h1 {
+
+  margin-bottom: 20px;
+  font-size: 35px;
 }
 </style>
