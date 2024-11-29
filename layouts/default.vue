@@ -15,8 +15,10 @@
 
     <!-- Main Content -->
     <main class="main-content">
+      <div class="main-header">
       <h1>{{ activeMenu }}</h1>
       <component :is="currentComponent" />
+        </div>
     </main>
   </div>
 </template>
@@ -27,7 +29,7 @@ import HeaderContent from '~/components/HeaderContent.vue';
 //import Carousel from '~/components/Carousel.vue';
 import CategoryList from '~/components/CategoryList.vue';
 //import ProductGrid from '~/components/ProductGrid.vue';
-//import ProductCard from '~/components/ProductCard.vue';
+import ProductCard from '~/components/ProductCard.vue';
 //import LastAdded from '~/components/LastAdded.vue';
 //import ContactForm from '~/components/ContactForm.vue';
 //import SearchBar from '~/components/SearchBar.vue';
@@ -41,7 +43,7 @@ export default {
     //Carousel,
     CategoryList,
    // ProductGrid,
-    //ProductCard,
+    ProductCard,
    // LastAdded,
    // ContactForm,
    // SearchBar,
@@ -121,12 +123,16 @@ export default {
 .main-content {
   flex: 1;
   padding: 10px;
-  background-color: #f8f9fa;
+
 }
 
 .main-content h1 {
 
+  margin-top: 15px;
   margin-bottom: 20px;
+  font-style: inherit;
   font-size: 35px;
 }
+
+
 </style>
