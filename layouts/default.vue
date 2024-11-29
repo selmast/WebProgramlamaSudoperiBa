@@ -32,7 +32,7 @@ import CategoryList from '~/components/CategoryList.vue';
 import ProductCard from '~/components/ProductCard.vue';
 //import LastAdded from '~/components/LastAdded.vue';
 import ContactForm from '~/components/ContactForm.vue';
-//import SearchBar from '~/components/SearchBar.vue';
+import SearchBar from '~/components/SearchBar.vue';
 import Pagination from '~/components/Pagination.vue';
 import FooterContent from '~/components/FooterContent.vue';
 
@@ -46,7 +46,7 @@ export default {
     ProductCard,
    // LastAdded,
    ContactForm,
-   // SearchBar,
+    SearchBar,
     Pagination,
     FooterContent,
 
