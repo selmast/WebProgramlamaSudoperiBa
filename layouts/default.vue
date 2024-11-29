@@ -26,7 +26,7 @@
 <script>
 // Import all the components you want to render
 import HeaderContent from '~/components/HeaderContent.vue';
-//import Carousel from '~/components/Carousel.vue';
+import Carousel from '~/components/Carousel.vue';
 import CategoryList from '~/components/CategoryList.vue';
 //import ProductGrid from '~/components/ProductGrid.vue';
 import ProductCard from '~/components/ProductCard.vue';
@@ -40,7 +40,7 @@ import FooterContent from '~/components/FooterContent.vue';
 export default {
   components: {
     HeaderContent,
-    //Carousel,
+    Carousel,
     CategoryList,
    // ProductGrid,
     ProductCard,
