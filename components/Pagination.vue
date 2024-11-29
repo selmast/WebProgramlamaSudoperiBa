@@ -98,7 +98,7 @@ export default {
   justify-content: center;
   align-items: center;
   font-size: 1rem;
-  //font-weight: bold;
+
   color: black;
   background-color: #cfd1d3;
   border: 1px solid #ccc;
@@ -121,7 +121,7 @@ export default {
 .page-button.active {
   background-color: #6c757d;
   color: white;
-  //border-color: black;
+
 }
 </style>
 
