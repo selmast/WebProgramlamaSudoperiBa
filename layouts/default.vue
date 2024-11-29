@@ -34,7 +34,7 @@ import ProductCard from '~/components/ProductCard.vue';
 import ContactForm from '~/components/ContactForm.vue';
 //import SearchBar from '~/components/SearchBar.vue';
 import Pagination from '~/components/Pagination.vue';
-//import FooterContent from '~/components/FooterContent.vue';
+import FooterContent from '~/components/FooterContent.vue';
 
 
 export default {
@@ -48,6 +48,8 @@ export default {
    ContactForm,
    // SearchBar,
     Pagination,
+    FooterContent,
+
 
   },
   data() {
