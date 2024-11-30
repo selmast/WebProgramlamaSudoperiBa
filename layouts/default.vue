@@ -30,7 +30,7 @@ import Carousel from '~/components/Carousel.vue';
 import CategoryList from '~/components/CategoryList.vue';
 import ProductGrid from '~/components/ProductGrid.vue';
 import ProductCard from '~/components/ProductCard.vue';
-//import LastAdded from '~/components/LastAdded.vue';
+import LastAdded from '~/components/LastAdded.vue';
 import ContactForm from '~/components/ContactForm.vue';
 import SearchBar from '~/components/SearchBar.vue';
 import Pagination from '~/components/Pagination.vue';
@@ -44,7 +44,7 @@ export default {
     CategoryList,
     ProductGrid,
     ProductCard,
-   // LastAdded,
+    LastAdded,
    ContactForm,
     SearchBar,
     Pagination,
