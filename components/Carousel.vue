@@ -16,9 +16,9 @@
         </div>
       </div>
 
-      <!-- Left arrow -->
+      /*<!-- Left arrow -->
       <button @click="prevSlide" class="carousel-nav prev">&#10094;</button>
-      <button @click="nextSlide" class="carousel-nav next">&#10095;</button>
+      <button @click="nextSlide" class="carousel-nav next">&#10095;</button>*/
 
     </div>
   </div>
@@ -34,13 +34,13 @@ export default {
         {
           //title: "Product 1",
           //description: "Description for Product 1",
-          image: "https://c.cdnmp.net/438641527/bms/5a36da87-f21f-4a77-8693-be45e1e33bd1.png?rv=1712480299",
+          image: "https://c.cdnmp.net/438641527/bms/8865476c-9203-4706-825d-4a3b77b8b9ab.png?rv=1734887063",
         },
-        {
+        /*{
           //title: "Product 2",
           //description: "Description for Product 2",
           image: "https://c.cdnmp.net/438641527/bms/0f991d61-64cc-4c2f-ae08-22e0bd9d906e.png?rv=1712479783",
-        },
+        },*/
       ],
     };
   },
@@ -60,16 +60,21 @@ export default {
 <style scoped>
 .carousel {
   max-width: max-content;
-  margin: 0 auto;
+
   padding: 20px;
   font-family: Arial, sans-serif;
   position:relative;
+
+
 }
 
 .carousel-container {
   display: flex;
   transition: transform 0.5s ease-in-out; /* Smooth transition for sliding */
   overflow: hidden;
+
+  margin-left: -10px;
+  margin-right: -10px;
 }
 
 .carousel-item {
@@ -110,6 +115,6 @@ export default {
 .carousel-nav img {
   width: 30px;
   height: 30px;
-  filter: invert(1); /* İkon rengini beyaz yapmak için */
+  filter: invert(1);
 }
 </style>
