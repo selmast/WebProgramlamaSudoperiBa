@@ -7,33 +7,33 @@
     <form @submit.prevent="submitLogin">
       <!-- Email Field -->
       <div class="form-group1">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input
-            type="email"
-            id="email"
-            v-model="formData.email"
-            placeholder="Email"
-            required
-        />
-      </div>
-
-      <!-- Password Field -->
-      <div class="form-group">
-        <label for="password">Lozinka</label>
-        <div class="password-container">
+        <div class="form-group">
+          <label for="email">Email</label>
           <input
-              type="password"
-              id="password"
-              v-model="formData.password"
-              placeholder="Lozinka"
+              type="email"
+              id="email"
+              v-model="formData.email"
+              placeholder="Email"
               required
           />
-          <button type="button" class="show-password">
-            <i class="fas fa-eye"></i>
-          </button>
         </div>
-      </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="password">Lozinka</label>
+          <div class="password-container">
+            <input
+                type="password"
+                id="password"
+                v-model="formData.password"
+                placeholder="Lozinka"
+                required
+            />
+            <button type="button" class="show-password">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Remember Me -->
@@ -46,7 +46,9 @@
       <button type="submit" class="btn-login">Prijavite se</button>
 
       <!-- Forgot Password -->
-      <a href="#" class="forgot-password">Zaboravili ste lozinku?</a>
+      <router-link :to="{ name: 'ForgotPassword' }" class="forgot-password">
+        Zaboravili ste lozinku?
+      </router-link>
 
       <!-- Registration Link -->
       <p>
@@ -186,7 +188,7 @@ export default {
 .remember-me {
   display: flex;
   align-items: center;
-   /* Add some spacing between the checkbox and label */
+  /* Add some spacing between the checkbox and label */
   margin-left: -170px;
 }
 
@@ -259,5 +261,4 @@ form {
 }
 
 </style>
-
 

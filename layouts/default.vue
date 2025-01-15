@@ -2,6 +2,7 @@
   <div class="layout">
     <HeaderContent />
     <CategoryList />
+
     <main>
       <nuxt-page />
     </main>

@@ -57,26 +57,44 @@
 </template>
 
 
-<script>
-import LoginForm from "~/components/LoginForm.vue";
+<script lang="ts">
+import { defineComponent, ref, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import LoginForm from '~/components/LoginForm.vue';
 
-export default {
+export default defineComponent({
   components: { LoginForm },
-  data() {
+  setup() {
+    const isLoginVisible = ref(false);
+    const route = useRoute();
+
+    // Watch for route changes
+    watch(
+        () => route.path,
+        (newPath) => {
+          if (newPath === '/ForgotPassword') {
+            isLoginVisible.value = false; // Close the login form
+          }
+        }
+    );
+
+    const showLoginForm = () => {
+      isLoginVisible.value = true;
+    };
+
+    const hideLoginForm = () => {
+      isLoginVisible.value = false;
+    };
+
     return {
-      isLoginVisible: false,
+      isLoginVisible,
+      showLoginForm,
+      hideLoginForm,
     };
   },
-  methods: {
-    showLoginForm() {
-      this.isLoginVisible = true;
-    },
-    hideLoginForm() {
-      this.isLoginVisible = false;
-    },
-  },
-};
+});
 </script>
+
 
 <style scoped>
 .header {
