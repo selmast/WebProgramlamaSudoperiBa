@@ -75,7 +75,11 @@ export default defineComponent({
           if (newPath === '/ForgotPassword') {
             isLoginVisible.value = false; // Close the login form
           }
-        }
+          if (newPath === '/Register') {
+            isLoginVisible.value = false; // Close the login form
+          }
+        },
+
     );
 
     const showLoginForm = () => {

@@ -6,6 +6,7 @@ import Index from '@/pages/index.vue';
 
 import Login from '@/components/LoginForm.vue';
 import ForgotPassword from "~/pages/ForgotPassword.vue";
+import Register from '@/pages/Register.vue';
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -26,7 +27,12 @@ const routes: Array<RouteRecordRaw> = [
         name: 'ForgotPassword',
         component: ForgotPassword,
         //component: () => import('@/pages/ForgotPassword.vue'),
-    }
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: Register,
+    },
 
 ];
 

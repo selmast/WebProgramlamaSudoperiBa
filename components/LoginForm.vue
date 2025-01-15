@@ -53,7 +53,7 @@
       <!-- Registration Link -->
       <p>
         Još uvek nemate nalog?
-        <a href="#">Registrujte se sada!</a>
+        <router-link :to="{ name: 'Register' }">Registrujte se sada!</router-link>
       </p>
     </form>
   </div>
