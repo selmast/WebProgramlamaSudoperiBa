@@ -58,17 +58,24 @@
 
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import LoginForm from '~/components/LoginForm.vue';
+import { defineComponent, ref, watch } from "vue";
+import LoginForm from "@/components/LoginForm.vue"; // Update the path if needed
+import { useRouter, useRoute } from "vue-router";
 
 export default defineComponent({
+  name: "HeaderContent",
   components: { LoginForm },
   setup() {
-    const isLoginVisible = ref(false);
+    const searchQuery = ref(""); // Define searchQuery for v-model
+    const isLoginVisible = ref(false); // State to show/hide the login form
+    const router = useRouter();
     const route = useRoute();
 
-    // Watch for route changes
+    const handleSearch = () => {
+      console.log("Search Query:", searchQuery.value);
+      router.push({ name: "SearchResults", query: { q: searchQuery.value } });
+    };
+
     watch(
         () => route.path,
         (newPath) => {
@@ -91,7 +98,9 @@ export default defineComponent({
     };
 
     return {
+      searchQuery,
       isLoginVisible,
+      handleSearch,
       showLoginForm,
       hideLoginForm,
     };
