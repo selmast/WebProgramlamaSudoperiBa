@@ -4,13 +4,13 @@ import { getAnalytics } from "firebase/analytics";
 
 // Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyA2J3MxJ9lvXzsncgl4pQYPZVfMqoaGoqA",
-    authDomain: "sudoperiba-b53cb.firebaseapp.com",
-    projectId: "sudoperiba-b53cb",
-    storageBucket: "sudoperiba-b53cb.firebasestorage.app",
-    messagingSenderId: "585492442228",
-    appId: "1:585492442228:web:2a2ec1ecc8ea3e80b03521",
-    measurementId: "G-YT3S6ETRB4",
+apiKey: "AIzaSyBA_1biQnV4k1ZPKZz54oDCA8rynrO2arg",
+authDomain: "sudoperiba-abbdc.firebaseapp.com",
+projectId: "sudoperiba-abbdc",
+storageBucket: "sudoperiba-abbdc.firebasestorage.app",
+messagingSenderId: "680607767147",
+appId: "1:680607767147:web:236dd6998095cda572af2e",
+measurementId: "G-2D7M8371M6"
 };
 
 // Initialize Firebase
