@@ -15,6 +15,10 @@ export default {
     Carousel,
     FeaturesSection,
   },
+
+
+
+
 };
 </script>
 
