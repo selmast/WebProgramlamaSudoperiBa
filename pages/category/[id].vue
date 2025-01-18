@@ -5,12 +5,7 @@
       <h2 class="sidebar-title">KATEGORIJE</h2>
       <ul class="category-list">
         <li v-for="category in allCategories" :key="category.id" class="category-item">
-          <router-link
-              :to="{ name: 'CategoryPage', params: { category: category.name } }"
-              class="category-link"
-          >
-            {{ category.name }}
-          </router-link>
+          <NuxtLink :to="`/category/${category.id}`" class="category-item">{{ category.name }}</NuxtLink>
         </li>
       </ul>
 
@@ -43,7 +38,7 @@
 
     <!-- Product Section -->
     <main class="product-section">
-      <h1 class="category-title">SET: {{ categoryName }}</h1>
+      <h1 class="category-title">{{ categoryName }}</h1>
       <div class="product-grid">
         <div
             v-for="product in filteredProducts"
@@ -72,13 +67,11 @@ import { useCategoryStore } from "@/stores/categoryStore";
 export default defineComponent({
   name: "CategoryPage",
   setup() {
+    const categoryName = ref<string>('');
     const route = useRoute();
     const productStore = useProductStore();
     const categoryStore = useCategoryStore();
-
-    const categoryName = computed(() => route.params.category as string);
     const visibleFilters = ref<string[]>([]);
-
     const toggleFilter = (title: string) => {
       if (visibleFilters.value.includes(title)) {
         visibleFilters.value = visibleFilters.value.filter(
@@ -91,6 +84,17 @@ export default defineComponent({
 
     const isFilterVisible = (title: string) => {
       return visibleFilters.value.includes(title);
+    };
+
+    const fetchCategoryData = async () => {
+      const categoryId = route.params.id as string;
+      const category = await categoryStore.fetchCategory(categoryId); // Fetch category
+      if (category) {
+        categoryName.value = category.name || "Unknown Category";
+      } else {
+        categoryName.value = "Unknown Category";
+        console.error(`Category with ID ${categoryId} not found.`);
+      }
     };
 
     const filters = ref([
@@ -111,6 +115,13 @@ export default defineComponent({
         options: ["Kamen", "Inox"],
       },
     ]);
+
+    // Fetch data on mount and react to route changes
+    watch(
+      () => route.params.id,
+      fetchCategoryData,
+      { immediate: true }
+    );
 
     onMounted(() => {
       categoryStore.fetchCategories();

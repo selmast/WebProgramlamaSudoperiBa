@@ -30,5 +30,16 @@ export const useCategoryStore = defineStore("category", {
                 console.error("Error fetching categories:", error);
             }
         },
+        async fetchCategory(id: string) {
+            if (this.categories.length === 0) {
+                await this.fetchCategories();
+            }
+            const category = this.categories.find((cat) => cat.id === id);
+            if (!category) {
+                console.error("Category not found");
+                return null;
+            }
+            return category;
+        }
     },
 });
