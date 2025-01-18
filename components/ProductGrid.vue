@@ -1,10 +1,19 @@
 <template>
   <section class="product-grid">
+    <div class="category-filter">
+      <label for="category-select">Kategori Seç:</label>
+      <select id="category-select" v-model="selectedCategory" @change="filterProducts">
+        <option value="">Tüm Kategoriler</option>
+        <option v-for="category in categories" :key="category.id" :value="category.name">
+          {{ category.name }}
+        </option>
+      </select>
+    </div>
     <div class="product-grid-container">
       <div
-          v-for="(product, index) in products"
-          :key="index"
-          class="product-card"
+        v-for="(product, index) in filteredProducts"
+        :key="index"
+        class="product-card"
       >
         <!-- Etiketler -->
         <div class="product-labels">
@@ -31,45 +40,78 @@
 </template>
 
 <script>
+import { useCategoryStore } from "@/stores/categoryStore";
+import { computed, ref, onMounted } from "vue";
+
 export default {
   name: "ProductGrid",
-  data() {
-    return {
-      products: [
-        {
-          name: "Granitni sudoper SanDonna Lena",
-          price: "499,00",
-          oldPrice: "558,00",
-          discount: 10,
-          isNew: true,
-          image: "https://c.cdnmp.net/438641527/p/t/9/sudoper-sandonna-joanna-podgradni-cami-tus-slavina~2029.jpg", // Örnek resim
-          isFavorite: false,
-        },
-        {
-          name: "SUDOPER SANDONNA JOANNA",
-          price: "339,00",
-          oldPrice: "378,00",
-          discount: 10,
-          isNew: true,
-          image: "https://c.cdnmp.net/438641527/p/t/1/granitni-sudoper-sandonna-selena-bez-lucna-mat-slavina-boja-bez~2021.jpg", // Örnek resim
-          isFavorite: false,
-        },
-        {
-          name: "Granitni sudoper SanDonna Selena",
-          price: "339,00",
-          oldPrice: "378,00",
-          discount: 10,
-          isNew: true,
-          image: "https://c.cdnmp.net/438641527/p/t/8/granitni-sudoper-sandonna-selena-siva-lucna-mat-slavina-boja-siva~2018.jpg", // Örnek resim
-          isFavorite: false,
-        },
-      ],
-    };
-  },
-  methods: {
-    toggleFavorite(product) {
+  setup() {
+    const categoryStore = useCategoryStore();
+    const selectedCategory = ref("");
+    const products = ref([
+      {
+        name: "Granitni sudoper SanDonna Lena",
+        price: "499,00",
+        oldPrice: "558,00",
+        discount: 10,
+        isNew: true,
+        category: "Mutfak",
+        image: "https://c.cdnmp.net/438641527/p/t/9/sudoper-sandonna-joanna-podgradni-cami-tus-slavina~2029.jpg",
+        isFavorite: false,
+      },
+      {
+        name: "SUDOPER SANDONNA JOANNA",
+        price: "339,00",
+        oldPrice: "378,00",
+        discount: 10,
+        isNew: true,
+        category: "Banyo",
+        image: "https://c.cdnmp.net/438641527/p/t/1/granitni-sudoper-sandonna-selena-bez-lucna-mat-slavina-boja-bez~2021.jpg",
+        isFavorite: false,
+      },
+      {
+        name: "Granitni sudoper SanDonna Selena",
+        price: "339,00",
+        oldPrice: "378,00",
+        discount: 10,
+        isNew: true,
+        category: "Mutfak",
+        image: "https://c.cdnmp.net/438641527/p/t/8/granitni-sudoper-sandonna-selena-siva-lucna-mat-slavina-boja-siva~2018.jpg",
+        isFavorite: false,
+      },
+    ]);
+
+    const filteredProducts = computed(() => {
+      if (!selectedCategory.value) {
+        return products.value;
+      }
+      return products.value.filter(
+        (product) => product.category === selectedCategory.value
+      );
+    });
+
+    const toggleFavorite = (product) => {
       product.isFavorite = !product.isFavorite;
-    },
+    };
+
+    const filterProducts = () => {
+      // Filtreleme zaten computed ile yapılıyor.
+    };
+
+    onMounted(async () => {
+      if (categoryStore.categories.length === 0) {
+        await categoryStore.fetchCategories();
+      }
+    });
+
+    return {
+      products,
+      filteredProducts,
+      selectedCategory,
+      categories: categoryStore.categories,
+      toggleFavorite,
+      filterProducts,
+    };
   },
 };
 </script>
@@ -154,7 +196,6 @@ export default {
   margin-bottom: 10px;
   color: #333333;
 }
-
 .product-pricing {
   display: flex;
   justify-content: center;
