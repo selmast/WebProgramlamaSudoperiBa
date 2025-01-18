@@ -15,6 +15,10 @@ export default {
     Carousel,
     FeaturesSection,
   },
+
+
+
+
 };
 </script>
 
@@ -46,6 +50,3 @@ export default {
   background-color: #000; /* Match header background color */
 }
 </style>
-
-
-
