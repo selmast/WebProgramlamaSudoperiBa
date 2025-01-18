@@ -3,16 +3,16 @@ import { db } from "@/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 
 interface Product {
-    id: string;
-    name: string;
-    category: string;
-    price: number;
-    imageUrl: string;
-    discount?: number;
+id: string;
+name: string;
+category: string;
+price: number;
+imageUrl: string;
+discount?: number;
 }
 
 export const useProductStore = defineStore("product", {
-    state: () => ({
+state: () => ({
         products: [] as Product[],
     }),
     actions: {
