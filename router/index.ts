@@ -7,6 +7,7 @@ import Index from '@/pages/index.vue';
 import Login from '@/components/LoginForm.vue';
 import ForgotPassword from "~/pages/ForgotPassword.vue";
 import Register from '@/pages/Register.vue';
+import CategoryPage from '~/pages/CategoryPage.vue';
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -32,6 +33,12 @@ const routes: Array<RouteRecordRaw> = [
         path: '/register',
         name: 'Register',
         component: Register,
+    },
+
+    {
+        path: "/category/:category",
+        name: "CategoryPage",
+        component: CategoryPage,
     },
 
 ];

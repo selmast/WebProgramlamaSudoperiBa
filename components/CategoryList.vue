@@ -3,7 +3,12 @@
     <nav class="category-nav">
       <ul class="category-list">
         <li v-for="category in categories" :key="category.id" class="category-item">
-          <a href="#" class="category-link">{{ category.name }}</a>
+          <router-link
+              :to="{ name: 'CategoryPage', params: { category: category.name } }"
+              class="category-link"
+          >
+            {{ category.name }}
+          </router-link>
         </li>
       </ul>
     </nav>
