@@ -6,18 +6,17 @@
           :key="index"
           class="product-card"
       >
-        <!-- Etiketler -->
+        <!-- Labels -->
         <div class="product-labels">
           <div v-if="product.isNew" class="label novo">NOVO</div>
           <div v-if="product.discount" class="label discount">{{ product.discount }}%</div>
         </div>
 
-        <!-- Ürün Resmi -->
-        <img :src="product.image" :alt="product.name" class="product-image" />
+        <!-- Product Image -->
+        <img :src="product.imageUrl" :alt="product.name" class="product-image" />
 
-        <!-- Ürün Detayları -->
+        <!-- Product Details -->
         <div class="product-details">
-          <!-- Favori Butonu -->
           <button class="favorite-btn" @click="toggleFavorite(product)">&#9825;</button>
           <h3 class="product-name">{{ product.name }}</h3>
           <div class="product-pricing">
@@ -30,57 +29,99 @@
   </section>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
+
+export default defineComponent({
   name: "ProductGrid",
-  data() {
-    return {
-      products: [
-        {
-          name: "Granitni sudoper SanDonna Lena",
-          price: "499,00",
-          oldPrice: "558,00",
-          discount: 10,
-          isNew: true,
-          image: "https://c.cdnmp.net/438641527/p/t/9/sudoper-sandonna-joanna-podgradni-cami-tus-slavina~2029.jpg", // Örnek resim
-          isFavorite: false,
-        },
-        {
-          name: "SUDOPER SANDONNA JOANNA",
-          price: "339,00",
-          oldPrice: "378,00",
-          discount: 10,
-          isNew: true,
-          image: "https://c.cdnmp.net/438641527/p/t/1/granitni-sudoper-sandonna-selena-bez-lucna-mat-slavina-boja-bez~2021.jpg", // Örnek resim
-          isFavorite: false,
-        },
-        {
-          name: "Granitni sudoper SanDonna Selena",
-          price: "339,00",
-          oldPrice: "378,00",
-          discount: 10,
-          isNew: true,
-          image: "https://c.cdnmp.net/438641527/p/t/8/granitni-sudoper-sandonna-selena-siva-lucna-mat-slavina-boja-siva~2018.jpg", // Örnek resim
-          isFavorite: false,
-        },
-      ],
-    };
+  props: {
+    products: {
+      type: Array as PropType<Array<{
+        name: string;
+        price: number;
+        oldPrice?: number;
+        discount?: number;
+        isNew?: boolean;
+        image: string;
+        isFavorite?: boolean;
+      }>>,
+      required: true,
+    },
   },
   methods: {
-    toggleFavorite(product) {
+    toggleFavorite(product: any) {
       product.isFavorite = !product.isFavorite;
     },
   },
-};
+});
 </script>
 
 <style scoped>
-/* Genel Stil */
+/* Product Section */
+.product-section {
+  flex: 1;
+}
+
+.category-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
 .product-grid {
-  padding: 20px 0;
-  background-color: #f9f9f9;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #fff;
   text-align: center;
 }
+
+.product-image {
+  width: 190px;
+  height: 190px;
+  margin: 0 auto 10px;
+  display: block;
+  object-fit: cover;
+}
+
+.product-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333333;
+}
+
+.product-pricing {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.old-price {
+  font-size: 0.9rem;
+  color: #999999;
+  text-decoration: line-through;
+}
+
+.new-price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: black;
+}
+
+
+.product-discount {
+  font-size: 12px;
+  color: red;
+  margin-top: 5px;
+}
+
 
 .product-grid-container {
   display: grid;
@@ -110,10 +151,8 @@ export default {
   position: absolute;
   top: 10px;
   right: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 5px;
+  display: inline;
+  gap: 55px;
 }
 
 .label {
@@ -123,10 +162,13 @@ export default {
   font-weight: bold;
   padding: 5px 8px;
   border-radius: 4px;
+
 }
 
 .label.novo {
   border-radius: 2px;
+
+
 }
 
 .label.discount {
@@ -174,7 +216,6 @@ export default {
   color: #f16805;
 }
 
-/* Favori Butonu */
 .favorite-btn {
   position: absolute;
   top: -25px;
