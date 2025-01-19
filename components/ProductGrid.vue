@@ -13,8 +13,9 @@
         </div>
 
         <!-- Product Image -->
-        <img :src="product.imageUrl" :alt="product.name" class="product-image" />
-
+        <NuxtLink :to="`/product/${product.id}`"> 
+          <img :src="product.imageUrl" :alt="product.name" class="product-image" />
+        </NuxtLink>            
         <!-- Product Details -->
         <div class="product-details">
           <button class="favorite-btn" @click="toggleFavorite(product)">&#9825;</button>

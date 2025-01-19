@@ -1,45 +1,30 @@
 <template>
-  <div class="product-card">
-    <!-- Product Image Container -->
-    <div class="product-image-container">
-      <!-- Product Image -->
-      <img src="/product.webp" :alt="product.name" class="product-image" />
+    <div
+          v-for="(product, index) in products"
+          :key="index"
+          class="product-card"
+      >
+        <!-- Labels -->
+        <div class="product-labels">
+          <div v-if="product.isNew" class="label novo">NOVO</div>
+          <div v-if="product.discount" class="label discount">{{ product.discount }}%</div>
+        </div>
 
-      <!-- Tags -->
-      <div class="product-tags">
-        <span v-if="product.isNew" class="tag new">New</span>
-        <span v-if="product.discount" class="tag discount">-{{ product.discount }}%</span>
+        <!-- Product Image -->
+        <NuxtLink :to="`/product/${product.id}`">
+          <img :src="product.imageUrl" :alt="product.name" class="product-image" />
+        </NuxtLink>
+
+        <!-- Product Details -->
+        <div class="product-details">
+          <button class="favorite-btn" @click="toggleFavorite(product)">&#9825;</button>
+          <h3 class="product-name">{{ product.name }}</h3>
+          <div class="product-pricing">
+            <span v-if="product.oldPrice" class="old-price">{{ product.oldPrice }} KM</span>
+            <span class="new-price">{{ product.price }} KM</span>
+          </div>
+        </div>
       </div>
-
-      <!-- Heart Icon -->
-      <button class="favorite-icon" >
-        <i class="fas fa-heart"></i>
-      </button>
-    </div>
-
-    <!-- Product Info -->
-    <div class="product-info">
-      <h2 class="product-name">{{ product.name }}</h2>
-      <p class="product-description">{{ product.description }}</p>
-
-
-      <!-- Price Section -->
-      <div class="product-price">
-        <span v-if="product.price" class="original-price">
-          {{ product.price }} KM
-        </span>
-        <span class="discounted-price">
-          {{ discountedPrice }} KM
-        </span>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="product-actions">
-        <button class="btn add-to-cart">Add to Cart</button>
-        <button class="btn view-details">View Details</button>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -72,168 +57,178 @@ export default {
 </script>
 
 <style scoped>
-/* Product Card Container */
-.product-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 300px;
-  margin: 0 auto;
+/* Product Section */
+.product-section {
+  flex: 1;
 }
 
-/* Product Image Container */
-.product-image-container {
-  position: relative; /* Enables positioning of tags and icons */
-  width: 100%;
-  margin-bottom: 15px;
+.category-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #fff;
+  text-align: center;
 }
 
 .product-image {
-  width: 100%;
-  border-radius: 8px;
+  width: 190px;
+  height: 190px;
+  margin: 0 auto 10px;
+  display: block;
+  object-fit: cover;
 }
 
-/* Tags */
-.product-tags {
-  position: absolute;
-  top: 10px;
-  left: 10px;
+.product-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333333;
+}
+
+.product-pricing {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: baseline;
   gap: 5px;
 }
 
-.tag {
-  background-color: #f16805;
-  margin-left: 230px;
-  color: white;
-  font-size: 0.8rem;
+.old-price {
+  font-size: 0.9rem;
+  color: #999999;
+  text-decoration: line-through;
+}
+
+.new-price {
+  font-size: 1.1rem;
   font-weight: bold;
-  padding: 5px 8px;
-  border-radius: 4px;
-  text-transform: uppercase;
+  color: black;
 }
 
-.tag.discount {
 
-  background-color: #f16805; /* Red for discount */
+.product-discount {
+  font-size: 12px;
+  color: red;
+  margin-top: 5px;
 }
 
-.tag.new {
-  background-color: #f16805; /* Green for new */
+
+.product-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Favorite Icon */
-.favorite-icon {
+/* Kart Stili */
+.product-card {
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+  padding: 10px;
+}
+
+.product-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Etiketler Sağ Üstte */
+.product-labels {
   position: absolute;
   top: 10px;
   right: 10px;
-  margin-top: 280px;
-  margin-right: -5px;
-  background: white;
-  border: #6c757d;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s;
+  display: inline;
+  gap: 55px;
 }
 
+.label {
+  background-color: #f16805;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 5px 8px;
+  border-radius: 4px;
 
-.favorite-icon i {
-
-  font-size: 1.2rem;
 }
 
-.favorite-icon:hover {
-  background-color: #f8d7da;
+.label.novo {
+  border-radius: 2px;
+
+
 }
 
-/* Product Info */
-.product-info {
+.label.discount {
+  border-radius: 2px;
+}
+
+/* Resim Stili */
+.product-image {
+  width: 190px;
+  height: 190px;
+  margin: 0 auto 10px;
+  display: block;
+  object-fit: cover;
+}
+
+/* Ürün Detayları */
+.product-details {
+  position: relative;
   text-align: center;
 }
 
 .product-name {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: bold;
-  color: #333;
   margin-bottom: 10px;
+  color: #333333;
 }
 
-.product-description {
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 15px;
-}
-
-.product-price {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #f16805;
-  margin-bottom: 20px;
-}
-
-/* Action Buttons */
-.product-actions {
+.product-pricing {
   display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-
-.btn {
-  padding: 10px 20px;
-  font-size: 0.9rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.btn.add-to-cart {
-  background-color: #f16805;
-  color: white;
-}
-
-.btn.add-to-cart:hover {
-  background-color: #f16960;
-}
-
-.btn.view-details {
-  background-color: #6c757d;
-  color: white;
-}
-
-.btn.view-details:hover {
-  background-color: #495057;
-}
-
-/* Price Section */
-.product-price {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-  display: flex;
-  gap: 10px;
   justify-content: center;
   align-items: baseline;
+  gap: 5px;
 }
 
-.original-price {
-  text-decoration: line-through; /* Cross out the original price */
-  color: #6c757d;
-  font-size: 1rem;
+.old-price {
+  font-size: 0.9rem;
+  color: #999999;
+  text-decoration: line-through;
 }
 
-.discounted-price {
-  color: black;
+.new-price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #f16805;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: -25px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.favorite-btn:hover {
+  color: #f16805;
 }
 </style>

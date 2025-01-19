@@ -1,4 +1,4 @@
-<template xmlns:width="http://www.w3.org/1999/xhtml">
+<template>
   <div class="register-container">
     <h2>Kreirajte svoj nalog</h2>
     <div class="tabs">

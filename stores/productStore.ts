@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { db } from "@/firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 
 interface Product {
     id: string;
@@ -32,6 +32,30 @@ export const useProductStore = defineStore("product", {
                 console.log("Products fetched for category:", categoryId, this.products);
             } catch (error) {
                 console.error("Error fetching products:", error);
+            }
+        },
+        async fetchProductById(id: string) {
+            try {
+                const docRef = doc(db, "products", id);
+                const docSnap = await getDoc(docRef);
+        
+                if (docSnap.exists()) {
+                    const product: Product = {
+                        id: docSnap.id,
+                        ...docSnap.data(),
+                    } as Product;
+        
+                    console.log("Product fetched for id:", id, product);
+        
+                    this.products = [product];
+                    return product;
+                } else {
+                    console.error("No product found with id:", id);
+                    return null;
+                }
+            } catch (error) {
+                console.error("Error fetching product by id:", error);
+                throw error;
             }
         },
     },
