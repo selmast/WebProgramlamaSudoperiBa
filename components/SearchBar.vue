@@ -39,8 +39,7 @@ export default {
     submitSearch() {
       // Simulate search logic
       this.searchResults = [
-        'Rezultat za "${t
-        his.searchQuery}" - 1',
+        'Rezultat za "${this.searchQuery}" - 1',
         'Rezultat za "${this.searchQuery}" - 2',
         'Rezultat za "${this.searchQuery}" - 3',
       ];

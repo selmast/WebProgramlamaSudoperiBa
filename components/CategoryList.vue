@@ -1,3 +1,4 @@
+
 <template>
   <client-only>
     <nav class="category-nav">

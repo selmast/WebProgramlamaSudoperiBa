@@ -39,39 +39,31 @@
     <!-- Product Section -->
     <main class="product-section">
       <h1 class="category-title">{{ categoryName }}</h1>
-      <div class="product-grid">
-        <div
-            v-for="product in filteredProducts"
-            :key="product.id"
-            class="product-card"
-        >
-          <img :src="product.imageUrl" alt="" class="product-image" />
-          <h2 class="product-title">{{ product.name }}</h2>
-          <p class="product-price">{{ product.price.toFixed(2) }} KM</p>
-          <p class="product-discount" v-if="product.discount">
-            -{{ product.discount }}%
-          </p>
-        </div>
-      </div>
+      <ProductGrid :products="products" />
     </main>
   </div>
 </template>
 
-
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useProductStore } from "@/stores/productStore";
 import { useCategoryStore } from "@/stores/categoryStore";
+import ProductGrid from "@/components/ProductGrid.vue";
 
 export default defineComponent({
   name: "CategoryPage",
+  components: {
+    ProductGrid,
+  },
   setup() {
-    const categoryName = ref<string>('');
     const route = useRoute();
-    const productStore = useProductStore();
     const categoryStore = useCategoryStore();
+    const productStore = useProductStore();
+
+    const categoryName = ref<string>("");
     const visibleFilters = ref<string[]>([]);
+
     const toggleFilter = (title: string) => {
       if (visibleFilters.value.includes(title)) {
         visibleFilters.value = visibleFilters.value.filter(
@@ -82,13 +74,11 @@ export default defineComponent({
       }
     };
 
-    const isFilterVisible = (title: string) => {
-      return visibleFilters.value.includes(title);
-    };
+    const isFilterVisible = (title: string) => visibleFilters.value.includes(title);
 
     const fetchCategoryData = async () => {
       const categoryId = route.params.id as string;
-      const category = await categoryStore.fetchCategory(categoryId); // Fetch category
+      const category = await categoryStore.fetchCategory(categoryId);
       if (category) {
         categoryName.value = category.name || "Unknown Category";
       } else {
@@ -97,44 +87,51 @@ export default defineComponent({
       }
     };
 
-    const filters = ref([
-      {
-        title: "BRENDOVI",
-        options: ["Dr Gans", "Florentina", "SANDONNA", "ULGRAN"],
-      },
-      {
-        title: "MINIMALNA ŠIRINA ORMARIĆA",
-        options: ["55CM", "60CM"],
-      },
-      {
-        title: "OBRADA-BOJA",
-        options: ["BEZ", "BIJELA", "CRNA GRANIT"],
-      },
-      {
-        title: "MATERIJAL",
-        options: ["Kamen", "Inox"],
-      },
-    ]);
+    const fetchData = async () => {
+      const categoryId = route.params.id as string;
+      await Promise.all([
+        categoryStore.fetchCategories(),
+        fetchCategoryData(),
+        productStore.fetchProductsByCategory(categoryId),
+      ]);
+    };
 
     // Fetch data on mount and react to route changes
     watch(
-      () => route.params.id,
-      fetchCategoryData,
-      { immediate: true }
+        () => route.params.id,
+        fetchData,
+        { immediate: true }
     );
 
     onMounted(() => {
-      categoryStore.fetchCategories();
-      productStore.fetchProductsByCategory(categoryName.value);
+      fetchData();
     });
 
     return {
       categoryName,
-      products: productStore.products,
-      allCategories: categoryStore.categories,
-      filters,
+      products: computed(() => productStore.products),
+      allCategories: computed(() => categoryStore.categories),
+      filters: ref([
+        {
+          title: "BRENDOVI",
+          options: ["Dr Gans", "Florentina", "SANDONNA", "ULGRAN"],
+        },
+        {
+          title: "MINIMALNA ŠIRINA ORMARIĆA",
+          options: ["55CM", "60CM"],
+        },
+        {
+          title: "OBRADA-BOJA",
+          options: ["BEZ", "BIJELA", "CRNA GRANIT"],
+        },
+        {
+          title: "MATERIJAL",
+          options: ["Kamen", "Inox"],
+        },
+      ]),
       toggleFilter,
       isFilterVisible,
+      fetchData,
     };
   },
 });
@@ -207,50 +204,5 @@ export default defineComponent({
 
 .filter-checkbox {
   margin-right: 10px;
-}
-
-/* Product Section */
-.product-section {
-  flex: 1;
-}
-
-.category-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-}
-
-.product-card {
-  border: 1px solid #ddd;
-  padding: 10px;
-  background-color: #fff;
-  text-align: center;
-}
-
-.product-image {
-  max-width: 100%;
-  height: auto;
-}
-
-.product-title {
-  font-size: 16px;
-  margin: 10px 0;
-}
-
-.product-price {
-  font-size: 14px;
-  color: #f16805;
-}
-
-.product-discount {
-  font-size: 12px;
-  color: red;
-  margin-top: 5px;
 }
 </style>
