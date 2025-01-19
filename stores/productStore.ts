@@ -16,11 +16,11 @@ export const useProductStore = defineStore("product", {
         products: [] as Product[],
     }),
     actions: {
-        async fetchProductsByCategory(category: string) {
+        async fetchProductsByCategory(categoryId: string) {
             try {
                 const q = query(
                     collection(db, "products"),
-                    where("category", "==", category)
+                    where("category", "==", categoryId)
                 );
                 const querySnapshot = await getDocs(q);
 
@@ -29,7 +29,7 @@ export const useProductStore = defineStore("product", {
                     ...doc.data(),
                 })) as Product[];
 
-                console.log("Products fetched for category:", category, this.products);
+                console.log("Products fetched for category:", categoryId, this.products);
             } catch (error) {
                 console.error("Error fetching products:", error);
             }

@@ -41,7 +41,7 @@
       <h1 class="category-title">{{ categoryName }}</h1>
       <div class="product-grid">
         <div
-            v-for="product in filteredProducts"
+            v-for="product in products"
             :key="product.id"
             class="product-card"
         >
@@ -97,6 +97,15 @@ export default defineComponent({
       }
     };
 
+    const fetchData = async () => {
+      const categoryId = route.params.id as string;
+      await Promise.all([
+        categoryStore.fetchCategories(),
+        fetchCategoryData(),
+        productStore.fetchProductsByCategory(categoryId)
+      ]);
+    };
+
     const filters = ref([
       {
         title: "BRENDOVI",
@@ -118,20 +127,19 @@ export default defineComponent({
 
     // Fetch data on mount and react to route changes
     watch(
-      () => route.params.id,
-      fetchCategoryData,
-      { immediate: true }
+        () => route.params.id,
+        fetchData,
+        { immediate: true }
     );
 
     onMounted(() => {
-      categoryStore.fetchCategories();
-      productStore.fetchProductsByCategory(categoryName.value);
+      fetchData();
     });
 
     return {
       categoryName,
-      products: productStore.products,
-      allCategories: categoryStore.categories,
+      products: computed(() => productStore.products),
+      allCategories: computed(() => categoryStore.categories),
       filters,
       toggleFilter,
       isFilterVisible,
