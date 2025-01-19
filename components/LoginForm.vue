@@ -61,6 +61,9 @@
 
 
 <script>
+import { useAuthStore } from "@/stores/authStore";
+const authStore = useAuthStore();
+
 export default {
   name: "LoginForm",
   data() {
@@ -74,8 +77,17 @@ export default {
   },
   methods: {
     submitLogin() {
-      alert(`Logged in as ${this.formData.email}`);
-      this.$emit("close");
+      authStore.login(this.formData.email, this.formData.password);
+      
+      watch(
+        () => authStore.user,
+        (newUser) => {
+        if (newUser) {
+          this.$emit("close"); // Close the login modal
+        }
+      },
+      { immediate: true }
+    );
     },
   },
 };

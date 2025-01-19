@@ -3,12 +3,14 @@
     <h2>Kreirajte svoj nalog</h2>
     <div class="tabs">
       <button
+          type="button"
           :class="{ active: isIndividual }"
           @click="setIndividual"
       >
         Fizičko lice
       </button>
       <button
+          type="button"
           :class="{ active: !isIndividual }"
           @click="setCompany"
       >
@@ -16,7 +18,7 @@
       </button>
     </div>
 
-    <form @submit.prevent="submitForm">
+    <form @submit.prevent="registerUser">
       <!-- Email and Password -->
       <div class="form-group">
 
@@ -118,25 +120,43 @@
           <a href="#">Politikom Privatnosti</a>.
         </label>
       </div>
-    </form>
-      <!-- Submit -->
+
+      <!-- Move the submit button and login link inside the form -->
       <div class="submit">
-      <button type="submit" class="btn-submit">Kreirajte nalog</button>
+        <button type="submit" class="btn-submit">Kreirajte nalog</button>
+        <p class="login-link">
+          <NuxtLink to="/login">Imate nalog?</NuxtLink>
+        </p>
+      </div>
 
-
-    <p class="login-link">
-       <router-link to="/login">Imate nalog?</router-link>
-    </p>
-  </div>
+      <!-- Add error message display -->
+      <div v-if="error" class="error-message">
+        {{ error }}
+      </div>
+    </form>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, ref, onMounted } from "vue";
+import { useAuthStore } from "@/stores/authStore";
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: "Register",
   setup() {
+    const router = useRouter();
+    const authStore = useAuthStore();
+    const isIndividual = ref(true);
+    const error = ref('');
+
+    // Check auth state on component mount
+    onMounted(() => {
+      if (authStore.user) {
+        router.push('/');
+      }
+    });
+
     const formData = reactive({
       email: "",
       password: "",
@@ -149,22 +169,46 @@ export default defineComponent({
       terms: false,
     });
 
-    const isIndividual = ref(true);
-
     const setIndividual = () => (isIndividual.value = true);
     const setCompany = () => (isIndividual.value = false);
 
-    const submitForm = () => {
-      alert("Nalog uspešno kreiran!");
-      console.log(formData);
+    const registerUser = async () => {
+      try {
+        error.value = '';
+        
+        // Create user data object
+        const userData = {
+          email: formData.email,
+          password: formData.password,
+          userType: isIndividual.value ? 'individual' : 'company',
+          name: formData.name,
+          phone: formData.phone,
+          address: formData.address,
+          country: formData.country,
+          city: formData.city,
+          promotions: formData.promotions,
+        };
+
+        console.log('Registering user with data:', userData);
+        await authStore.register(userData);
+        
+        alert("Registration successful!");
+        router.push('/');
+      } catch (err) {
+        error.value = err instanceof Error ? err.message : 'Registration failed';
+        console.error('Registration error:', err);
+      }
     };
+
+    
 
     return {
       formData,
       isIndividual,
       setIndividual,
       setCompany,
-      submitForm,
+      registerUser,
+      error,
     };
   },
 });
